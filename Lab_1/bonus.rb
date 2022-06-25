@@ -5,7 +5,7 @@
 
 ###### "task8" ######
 
-def task8(nums, target)
+def task8_n2(nums, target)
     for i in 0..nums.length-2
         for j in i+1..nums.length-1
             if ((nums[i]+nums[j]) == target)
@@ -16,9 +16,27 @@ def task8(nums, target)
     return -1
 end
 
-print "##task 8 test\n\n"
+def task8_n(nums, target)
+    map = Hash.new
+    for i in 0..nums.length
+        comp = target - nums[i]
+        if map.has_key?(comp)
+            return [map[comp], i]
+        end
+        map[nums[i]] = i
+    end
+    return nil
+end
 
-print task8([2,7,11,15], 9)
+print "##task 8 test O(n^2)\n\n"
+
+print "#{task8_n2([2,7,11,15], 9)}\n"
+print task8_n2([2,7,11,15], 26)
+
+print "\n\n##task 8 test 2 O(n)\n\n"
+
+print "#{task8_n([2,7,11,15], 9)}\n"
+print task8_n([2,7,11,15], 26)
 
 print "\n\n\n"
 
@@ -26,25 +44,77 @@ print "\n\n\n"
 
 ###### "task9" ######
 
-def task9(s)
-    n=-1
-    while s.length != n
-        n=s.length
-        s=s.sub('()','')
-        s=s.sub('[]','')
-        s=s.sub('{}','')
-        if s.length==0
-            return 'Yes'
+def validate(str)
+    if str == "" || (str.length % 2) != 0
+        return false
+    else
+        chars = str.split(//)
+        for c in chars
+            if (!(c == '{' || c == '[' || c == '(' || c == '}' || c == ']' || c == ')'))
+                return false
+            end
         end
     end
-    return 'NO'
+end
+
+def task9(s)
+    if validate(s)
+        n=-1
+        while s.length != n
+            n=s.length
+            s=s.sub('()','')
+            s=s.sub('[]','')
+            s=s.sub('{}','')
+            if s.length == 0
+                return true
+            end
+        end
+        return false
+    else
+        return false
+    end
+end
+
+# using hash and stack
+def task9_ap2(str)
+    if validate(str)
+        close_for_open = Hash[ '(' => ')', '[' => ']', '{' => '}' ]
+
+        stack = []
+    
+        for c in str.split(//)
+            if c == '(' || c == '[' || c == '{' 
+                stack.push(c)
+            elsif c == ')' || c == ']' || c == '}'
+                if stack.length == 0
+                    return false
+                end
+    
+                pop = stack.pop
+                if close_for_open[pop] != c
+                    return false
+                end
+            end
+        end
+        return stack.length == 0
+    else
+        return false
+    end
 end
 
 print "##task 9 test\n\n"
 
 puts task9("{[()]}")
-puts task9("{[(])}")
-puts task9("{{[[(())]]}}")
+puts task9_ap2("{[()]}")
+puts '----'
+puts task9("([{[}])")
+puts task9_ap2("([{[}])")
+puts '----'
+puts task9('')
+puts '----'
+puts task9('{[}]')
+puts task9_ap2('{[}]')
+puts '----'
 
 print "\n\n\n"
 
@@ -67,12 +137,8 @@ def countWords (words1, words2)
     result = 0
 
     words1.each do |word|
-        if checkTimes(words1, word).eql?(1) && checkTimes(words2, word).eql?(1)
+        if checkTimes(words1, word) == 1 && checkTimes(words2, word) == 1
             result += 1
-            p "result"
-            p result
-        else 
-            p "else"
         end
 
     end
