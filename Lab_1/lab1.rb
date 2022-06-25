@@ -98,14 +98,18 @@ print "\n\n\n"
 ###### "task6" ######
 
 def task6(nums)
-    return rotated = [nums[1], nums[2], nums[0]]
+    tempNums = []
+    for i in 0..nums.length-1
+        tempNums[i] = nums[nums.length-(i+1)]
+    end
+    return tempNums
 end
 
 print "##task 6 test\n\n"
 
 p task6([1,2,5])
-p task6([1,2,3])
-p task6([1,2,4])
+p task6([1,2,3,4,5])
+p task6([1,2,4,5,2,9])
 
 print "\n\n\n"
 
