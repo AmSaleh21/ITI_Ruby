@@ -137,7 +137,7 @@ def countWords (words1, words2)
     result = 0
 
     words1.each do |word|
-        if checkTimes(words1, word) == 1 && checkTimes(words2, word) == 1
+        if checkTimes(words1, word).eql?(1) && checkTimes(words2, word).eql?(1)
             result += 1
         end
 
@@ -148,8 +148,10 @@ end
 
 print "##task 10 test\n\n"
 
-words1 = ["leetcode","is","amazing","as","is"], words2 = ["amazing","leetcode","is"]
-# words1 = ["b","bb","bbb"], words2 = ["a","aa","aaa"]
+words1 = ["leetcode","is","amazing","as","is"]
+words2 = ["amazing","leetcode","is"]
+# words1 = ["b","bb","bbb"] 
+# words2 = ["a","aa","aaa"]
 
 p countWords(words1, words2)
 
